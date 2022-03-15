@@ -4,15 +4,34 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ *     int operar = 0; Esta variable es usada cuando, mi usuario pulsa los caracteres { +, ×, ÷}, al pulsar esas variables se le asigna un caso
+ *                      1: Es Multiplicar
+ *                      2: Es Dividir
+ *                      3: Es Sumar
+ *
+ *     double resultado; Esta variable es un acumulador, donde se acumulan los datos que el usuario ingresa, se apoya de la condicion booleana
+ *                       primernumero, ya que si es true, el usuario esta ingresando el primer numero y la variable resultado toma directamente
+ *                       el valor que ingreso mi usuario.
+ *
+ *     boolean primernumero=true; Sirve para saber si el usuario esta ingresando el primer numero
+ *
+ *     boolean operadorPreviamentePulsado = true; Esta variable sirve para saber si se pulso previamente un operador, sirve principalmente cuando
+ *                                                es pulsado el caracter { - }, ya que este tiene dos formas de funcionar, puede funcionar en
+ *                                                forma de resta (8 - 4), o puede funcionar para ingresar numeros negativos en mi programa (8x-3)
+ *
+ *     double answ=0; Esta variable sirve para guardar el resultado obtenido y mi usuario pueda acceder a la ultima respuesta ingresada.
+ */
+
 public class Escuchar extends JFrame implements ActionListener {
 
     //Se crean los botones que se usaran
     JButton btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btnDel, btnAC;
     JButton btnMultiplicacion, btnDivision, btnSuma, btnResta, btnAns, btnIgual, btnPunto, btnEXP;
 
-    //Se crea el TextField y los paneles en donde estaran mis botones
+    //Se crea el TextField en donde mostrare los resultados y lo que el usuario digite
     JTextField display;
-    JPanel superior, medio, inferior;
+
 
     //Se crean mis cadenas donde trabajare mis datos, uno para el display y el otro para obtenermis numeros
     StringBuffer muestra = new StringBuffer();
@@ -26,6 +45,10 @@ public class Escuchar extends JFrame implements ActionListener {
     boolean operadorPreviamentePulsado = true;
     double answ=0;
 
+
+    /*
+        El metodo asignar eventos es mi base del programa, ya que gracias a el funciona el actionListener (Más explicacion en clase " Interfaz ")
+     */
     public void asignarEventos(){
             btn0.addActionListener(this);
             btn1.addActionListener(this);
@@ -52,9 +75,9 @@ public class Escuchar extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         /**
-         * Se manejan dos tostring, el primero es para guardar los numeros y el otro es para almacenar los numeros en
-         * el arreglo de numeros :)
+         *
          */
+
         if(e.getSource()==btnAns){
             muestra.append("answ ");
             numero.append(answ);

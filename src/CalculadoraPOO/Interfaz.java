@@ -6,23 +6,16 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+/**
+ * Esta clase se encarga de inicializar mi interfaz grafica, es una clase que hereda los botones y los displays de la clase Escuchar,
+ * esto funciona de esta manera, por que al utilizar el actionListener en la clase escuchar, en el metodo actionPerformed() necesito acceder
+ * a todos los botones para poder asignar la accion que quiero que suceda, en este caso agregar numeros a mi display.
+ */
 public class Interfaz  extends Escuchar {
-
-
-
-
-
-
-
-
-    public Interfaz(){
-        crearInterfaz();
-    }
+    //Defino mis paneles en donde voy a colocar mis botones
+    JPanel superior, medio, inferior;
 
     public void crearInterfaz(){
-
-
-
         display = new JTextField();
         display.setEditable(false);
         display.setBounds(50,50,500,150);
@@ -95,9 +88,11 @@ public class Interfaz  extends Escuchar {
         add("Center",medio);
         add("South",inferior);
 
-        //Aqui es donde esta en si el funcionamiento de mi programa, por que usa el metodo asignar eventos que heredo
-        //De la clase escuchar, entonces cuando se pulse un boton ya estoy trabajando directamente con el actionListener
-        //De la otra clase
+        /*
+            Aqui es donde esta en si el funcionamiento de mi programa, por que usa el metodo asignar eventos que heredo
+            De la clase " Escuchar ", entonces cuando se pulse un boton ya estoy trabajando directamente con el actionListener
+            de la clase Escuchar
+        */
         asignarEventos();
 
         //Inicializa mi ventana

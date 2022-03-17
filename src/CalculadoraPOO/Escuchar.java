@@ -54,9 +54,8 @@ public class Escuchar extends JFrame implements ActionListener {
     boolean operadorPreviamentePulsado = true;
     double answ=0;
 
-
-    //El metodo asignarEventos es mi base del programa, ya que gracias a el funciona el actionListener (Más explicacion en clase " Interfaz ")
     public void asignarEventos(){
+        //El metodo asignarEventos es mi base del programa, ya que gracias a el funciona el actionListener (Más explicacion en clase " Interfaz ")
             btn0.addActionListener(this);
             btn1.addActionListener(this);
             btn2.addActionListener(this);
@@ -79,120 +78,125 @@ public class Escuchar extends JFrame implements ActionListener {
             btnEXP.addActionListener(this);
     }
 
-    /*
-        El metodo MostrarDisplay funciona con los botones numeros y los botones especiales, ya que basicamente muestra lo que se añade al
-        StringBuffer de muestra y tiene la condicion de operadorPreviamentePulsado=false; esto es porque el caracter { - } funciona como operador
-        hibrido, y en este caso cuando se añade un numero, su funcionalidad es la de restar.
+    public void BotonNumero(String i){ //Recibe i
+        /*
+        El metodo BotonNumero funciona con los botones numeros y el boton especial ".",
+        Primero añade los datos a los stringBuffers y despues muestra lo que se añade al
+        StringBuffer de muestra y tiene la condicion de operadorPreviamentePulsado=false;
+        esto es porque el caracter { - } funciona como operador hibrido, y en este caso
+        cuando se añade un numero, su funcionalidad es la de restar.
      */
-    public void MostrarDisplay(){
+        muestra.append(i);
+        numero.append(i);
+        //Se agrega a mis stringBuffers, el stringBuffer de muestra se encarga de mostrarlo en pantalla,
+        //y numero es el temporal, en donde se guarda y despues de borra usando el metodo extraerNumero();
+
+
         display.setText(muestra.toString());
         operadorPreviamentePulsado = false;
+        //Se muestra el display y se acutaliza la condicion de operadorPreviamentePulsado
     }
+
+    public void BotonOperador(String caracter, int nOperacion){
+        operadorPreviamentePulsado=true;
+        operacion();
+        muestra.append(caracter);
+        operar=nOperacion;
+        display.setText(muestra.toString());
+
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        /**
-         *
-         */
-
         //BOTONES DE FANTASIA
         if(e.getSource()==btnDel || e.getSource()==btnEXP){
             JOptionPane.showMessageDialog(null, "Usted tiene comprado el paquete de calculadora basico, " +
-                    "                                                   \ncompre un paquete plus para continuar.");
+                                                                        "\ncompre un paquete plus para continuar.");
         }
 
         //BOTONES ESPECIALES
         if(e.getSource()==btnAns){
+            //Esta basicamente hace algo similar a lo que se hace en botonNumero, pero
+            //Como en el display muestra la palabra "Ans ", no puede usar ese metodo.
             muestra.append("Ans ");
             numero.append(answ);
-            MostrarDisplay();
+            display.setText(muestra.toString());
+            operadorPreviamentePulsado = false;
         }
         if(e.getSource()==btnPunto){
-            muestra.append(".");
-            numero.append(".");
-            MostrarDisplay();
+            BotonNumero(".");
+        }
+        if(e.getSource()==btnIgual){
+            operacion();
+            answ = resultado;
+            display.setText("" + resultado); //Para no usa un metodo solo lo concateno
+
+            muestra = new StringBuffer();
+            numero = new StringBuffer();
+            muestra.append(resultado);
+            numero.append(resultado);
+            //Se pone que es el primer numero, para que cuando el usuario pulse el operador con el que quiere continuar solo extraiga el nuermo que appendamos arriba
+            primernumero = true;
+            operadorPreviamentePulsado = false;
+        }
+        if(e.getSource()==btnAC){
+            //Reiniica mi programa
+            muestra = new StringBuffer();
+            numero = new StringBuffer();
+            primernumero = true;
+            operadorPreviamentePulsado = true;
+            display.setText( "" );
         }
 
         //BOTONES DE NUMEROS
         if(e.getSource()==btn0){
-            //Se agrega a mis stringBuffers, el stringBuffer de muestra se encarga de mostrarlo en pantalla,
-            //y numero es el temporal, en donde se guarda y despues de borra usando el metodo extraerNumero();
-            muestra.append("0");
-            numero.append("0");
-            MostrarDisplay();
+            BotonNumero("0");
         }
         if(e.getSource()==btn1){
-            muestra.append("1");
-            numero.append("1");
-            MostrarDisplay();
+            BotonNumero("1");
         }
         if(e.getSource()==btn2){
-            muestra.append("2");
-            numero.append("2");
-            MostrarDisplay();
+            BotonNumero("2");
         }
         if(e.getSource()==btn3){
-            muestra.append("3");
-            numero.append("3");
-            MostrarDisplay();
+            BotonNumero("3");
         }
         if(e.getSource()==btn4){
-            muestra.append("4");
-            numero.append("4");
-            MostrarDisplay();
+            BotonNumero("4");
         }
         if(e.getSource()==btn5){
-            muestra.append("5");
-            numero.append("5");
-            MostrarDisplay();
+            BotonNumero("5");
         }
         if(e.getSource()==btn6){
-            muestra.append("6");
-            numero.append("6");
-            MostrarDisplay();
+            BotonNumero("6");
         }
         if(e.getSource()==btn7){
-            muestra.append("7");
-            numero.append("7");
-            MostrarDisplay();
+            BotonNumero("7");
         }
         if(e.getSource()==btn8){
-            muestra.append("8");
-            numero.append("8");
-            MostrarDisplay();
+            BotonNumero("8");
         }
         if(e.getSource()==btn9){
-            muestra.append("9");
-            numero.append("9");
-            MostrarDisplay();
+            BotonNumero("9");
         }
 
         //BOTONES OPERADORES
-        if(e.getSource()==btnMultiplicacion){ //aca que no se pueda pulsar primero
-            operadorPreviamentePulsado=true;
-            operacion();
-            muestra.append("×");
-            operar=1;
-            display.setText(muestra.toString());
+        if(e.getSource()==btnMultiplicacion){
+            BotonOperador("×",1);
         }
-        if(e.getSource()==btnDivision){ //aca que no se pueda pulsar primero
-            operadorPreviamentePulsado=true;
-            operacion();
-            muestra.append("÷");
-            operar=2;
-            display.setText(muestra.toString());
+        if(e.getSource()==btnDivision){
+            BotonOperador("÷",2);
         }
-        if(e.getSource()==btnSuma){ //aca que no se pueda pulsar primero -este teoricamente si podria pero esta programado como una funcion y no me quiero romper la cabeza
-            operadorPreviamentePulsado=true;
-            operacion();
-            muestra.append("+");
-            operar=3;
-            display.setText(muestra.toString());
+        if(e.getSource()==btnSuma){
+            BotonOperador("+",3);
         }
 
         //BOTON OPERADOR HIBRIDO
         if(e.getSource()==btnResta){
             if(!operadorPreviamentePulsado) {
                 //Si operadorPreviamentePulsado es falso, entoces funciona como operador
+                //Solo que como no existe un caso de resta, se le appenda el caracter { - }
+                //para que al sumarlo sea interpretado como negativo
                 operacion();
                 operar=3;
                 muestra.append("-");
@@ -203,52 +207,16 @@ public class Escuchar extends JFrame implements ActionListener {
                 numero.append("-");
                 operadorPreviamentePulsado=false;
             }
-
-
             display.setText(muestra.toString());
 
         }
-        if(e.getSource()==btnIgual){
-            operacion();
-            answ = resultado;
-            display.setText("" + resultado); //Para no usa un metodo solo lo concateno
-            operadorPreviamentePulsado = false;
-
-            //------------- Implementare continuidad por si se quiere seguir pulsando numeros
-            //se limpian mis cadenas
-            muestra = new StringBuffer();
-            numero = new StringBuffer();
-
-            //Se añade el resultado
-            muestra.append(resultado);
-            numero.append(resultado);
-            //Se pone que es el primer numero, para que cuando el usuario pulse el operador con el que quiere continuar solo extraiga el nuermo que appendamos arriba
-            primernumero = true;
-        }
-
-        if(e.getSource()==btnAC){
-            muestra = new StringBuffer();
-            numero = new StringBuffer();
-            primernumero = true;
-            operadorPreviamentePulsado = true;
-            operar=0;
-            display.setText( "" );
-
-        }
-
-
-
-
-
-
-
 
     }
 
     public Double extraerNumero(){
         Double numeroExtraido = Double.parseDouble(numero.toString()); // se crea uma variable local para almacenar el numero extraido
         numero = new StringBuffer();                                   // se limpia el string buffer de numero
-        return numeroExtraido;                                         //se retorna el numero uno
+        return numeroExtraido;                                         //se retorna el numero extraido
     }
 
     public void operacion(){
@@ -256,17 +224,12 @@ public class Escuchar extends JFrame implements ActionListener {
             primernumero = false;
             resultado = extraerNumero();
         }else {
-            switch (operar)
-            {
-                case 1 -> resultado *= extraerNumero();
-                case 2 -> resultado /= extraerNumero();
-                case 3 -> resultado += extraerNumero();
-            }
-
+                switch (operar) {
+                    case 1 -> resultado *= extraerNumero();
+                    case 2 -> resultado /= extraerNumero();
+                    case 3 -> resultado += extraerNumero();
+                }
             }
         }
 
-
-
     }
-

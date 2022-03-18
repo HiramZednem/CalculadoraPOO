@@ -225,9 +225,9 @@ public class Escuchar extends JFrame implements ActionListener {
             resultado = extraerNumero();
         }else {
                 switch (operar) {
-                    case 1 -> resultado *= extraerNumero();
-                    case 2 -> resultado /= extraerNumero();
-                    case 3 -> resultado += extraerNumero();
+                    case 1 -> resultado *= extraerNumero(); //Multiplixacion
+                    case 2 -> resultado /= extraerNumero(); //Divison
+                    case 3 -> resultado += extraerNumero(); //suma y resta
                 }
             }
         }

@@ -42,16 +42,13 @@ public class Escuchar extends JFrame implements ActionListener {
     JTextField display;
 
 
-    //Se crean mis StringBuffers donde trabajare mis datos, uno para el display y el otro para obtenermis numeros
-    StringBuffer muestra = new StringBuffer();
-    StringBuffer numero = new StringBuffer();
+    //Se crea mi cadena vacia
+    String datosIngresados="";
 
 
     //Incializo mis variables;
     int operar = 0;
     double resultado;
-    boolean primernumero=true;
-    boolean operadorPreviamentePulsado = true;
     double answ=0;
 
     public void asignarEventos(){
@@ -78,33 +75,14 @@ public class Escuchar extends JFrame implements ActionListener {
             btnEXP.addActionListener(this);
     }
 
-    public void BotonNumero(String i){ //Recibe i
-        /*
-        El metodo BotonNumero funciona con los botones numeros y el boton especial ".",
-        Primero añade los datos a los stringBuffers y despues muestra lo que se añade al
-        StringBuffer de muestra y tiene la condicion de operadorPreviamentePulsado=false;
-        esto es porque el caracter { - } funciona como operador hibrido, y en este caso
-        cuando se añade un numero, su funcionalidad es la de restar.
-     */
-        muestra.append(i);
-        numero.append(i);
-        //Se agrega a mis stringBuffers, el stringBuffer de muestra se encarga de mostrarlo en pantalla,
-        //y numero es el temporal, en donde se guarda y despues de borra usando el metodo extraerNumero();
+    public void BotonNumero(String i){ //Recibe i que es lo que se pulso
+
+        datosIngresados+= i;
 
 
-        display.setText(muestra.toString());
-        operadorPreviamentePulsado = false;
-        //Se muestra el display y se acutaliza la condicion de operadorPreviamentePulsado
+        //Se muestra el display
     }
 
-    public void BotonOperador(String caracter, int nOperacion){
-        operadorPreviamentePulsado=true;
-        operacion();
-        muestra.append(caracter);
-        operar=nOperacion;
-        display.setText(muestra.toString());
-
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -118,33 +96,19 @@ public class Escuchar extends JFrame implements ActionListener {
         if(e.getSource()==btnAns){
             //Esta basicamente hace algo similar a lo que se hace en botonNumero, pero
             //Como en el display muestra la palabra "Ans ", no puede usar ese metodo.
-            muestra.append("Ans ");
-            numero.append(answ);
-            display.setText(muestra.toString());
-            operadorPreviamentePulsado = false;
+            datosIngresados = answ+"";
+            display.setText(datosIngresados);
         }
         if(e.getSource()==btnPunto){
             BotonNumero(".");
         }
         if(e.getSource()==btnIgual){
-            operacion();
-            answ = resultado;
-            display.setText("" + resultado); //Para no usa un metodo solo lo concateno
-
-            muestra = new StringBuffer();
-            numero = new StringBuffer();
-            muestra.append(resultado);
-            numero.append(resultado);
-            //Se pone que es el primer numero, para que cuando el usuario pulse el operador con el que quiere continuar solo extraiga el nuermo que appendamos arriba
-            primernumero = true;
-            operadorPreviamentePulsado = false;
+            //AQUI ES DONDE VA A IR LA LOGICA
         }
         if(e.getSource()==btnAC){
             //Reiniica mi programa
-            muestra = new StringBuffer();
-            numero = new StringBuffer();
-            primernumero = true;
-            operadorPreviamentePulsado = true;
+            answ=0;
+            datosIngresados="";
             display.setText( "" );
         }
 
@@ -182,54 +146,22 @@ public class Escuchar extends JFrame implements ActionListener {
 
         //BOTONES OPERADORES
         if(e.getSource()==btnMultiplicacion){
-            BotonOperador("×",1);
+            BotonNumero("×");
         }
         if(e.getSource()==btnDivision){
-            BotonOperador("÷",2);
+            BotonNumero("÷");
         }
         if(e.getSource()==btnSuma){
-            BotonOperador("+",3);
+            BotonNumero("+");
         }
-
-        //BOTON OPERADOR HIBRIDO
         if(e.getSource()==btnResta){
-            if(!operadorPreviamentePulsado) {
-                //Si operadorPreviamentePulsado es falso, entoces funciona como operador
-                //Solo que como no existe un caso de resta, se le appenda el caracter { - }
-                //para que al sumarlo sea interpretado como negativo
-                operacion();
-                operar=3;
-                muestra.append("-");
-                numero.append("-");
-            }else{
-                //Caso contrario, solo mete el caracter { - } al display
-                muestra.append("-");
-                numero.append("-");
-                operadorPreviamentePulsado=false;
-            }
-            display.setText(muestra.toString());
+                BotonNumero("-");
 
-        }
+            }
+            display.setText(datosIngresados);
+
+
 
     }
-
-    public Double extraerNumero(){
-        Double numeroExtraido = Double.parseDouble(numero.toString()); // se crea uma variable local para almacenar el numero extraido
-        numero = new StringBuffer();                                   // se limpia el string buffer de numero
-        return numeroExtraido;                                         //se retorna el numero extraido
-    }
-
-    public void operacion(){
-        if (primernumero){
-            primernumero = false;
-            resultado = extraerNumero();
-        }else {
-                switch (operar) {
-                    case 1 -> resultado *= extraerNumero(); //Multiplixacion
-                    case 2 -> resultado /= extraerNumero(); //Divison
-                    case 3 -> resultado += extraerNumero(); //suma y resta
-                }
-            }
-        }
 
     }
